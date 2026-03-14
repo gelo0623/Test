@@ -27,7 +27,12 @@ vector<string> adminUsers = {"admin"};
 
 
 
-void addAccount(string card, string pin, double balance, string bank, string type) {
+void addAccount(vector<string>& cardNumbers,
+vector<string>& encodedPINs,     
+vector<double>& balances,     
+vector<string>& userBanks,        
+vector<string>& accountTypes,
+string card, string pin, double balance, string bank, string type) {
 
 cardNumbers.push_back(card);
 encodedPINs.push_back(pin);
@@ -40,7 +45,11 @@ accountTypes.push_back(type);
 
 // Part 1 D i move raw sabi sa part 5
 
-void logTransaction(const string& cardNum, const string& type, double amount, double fee) {
+void logTransaction(vector<string>& transactionTypes,    
+vector<double>& transactionAmounts,
+vector<double>& transactionFees,
+vector<int>& transactionQuantities,
+const string& cardNum, const string& type, double amount, double fee) {
 
     bool found = false;
 
@@ -82,11 +91,18 @@ void logTransaction(const string& cardNum, const string& type, double amount, do
 
 }
 
+// I HATTE PART 5, sinisira code namin TwT
 
 
 // Overloading function
-void logTransaction(const string& cardNum, const string& type, double amount) {
-    logTransaction(cardNum, type, amount, 0);
+void logTransaction(vector<string>& transactionTypes,    
+vector<double>& transactionAmounts,
+vector<double>& transactionFees,
+vector<int>& transactionQuantities,
+const string& cardNum, const string& type, double amount) {
+    
+    logTransaction(transactionTypes, transactionAmounts, transactionFees,
+    transactionQuantities, cardNum, type, amount, 0);
 }
 
 
@@ -549,7 +565,9 @@ vector<string>& accountTypes) {
             cout << "Enter Account Type: ";
             cin >> type;
             
-            addAccount(card, encodeString(pin), balance, bank, type);
+            addAccount(cardNumbers, encodedPINs,
+            balances, userBanks, accountTypes,
+            card, encodeString(pin), balance, bank, type);
             
             cout << "Account Added Successfully.\n";
             
