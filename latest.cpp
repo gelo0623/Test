@@ -72,7 +72,27 @@ void logTransaction(string type, double amount, double fee) {
         transactionQuantities.push_back(1);
         
     }
+    
+    // PART 7 BONUS 
+    ofstream file("transaction.csv", ios::app); 
+    if (file.is_open()){
+        time_t now = time(0);
+        tm* timeinfo = localtime(&now);
+        
+        file << (timeinfo->tm_mon + 1) << "/" << timeinfo->tm_mday << "/" (timeinfo->tm_year + 1900) << "," << timeinfo->tm_hour << ":" << timeinfo->tm_min << "," << cardNum << "," << type << "," << amount << "," << fee << endl;
+        file.close();
+    }
+    else {
+        cerr << "Error: Could not open transaction.csv" << endl;
+    }
 
+}
+
+
+
+// Overloading function
+void logTransaction(string type, double amount) {
+    logTransaction(type, amount, 0);
 }
 
 
@@ -92,7 +112,7 @@ void calculateBills(double amount, int& bills1000, int& bills500) {
 
     else if (amount >= 500) {
         bills500++;
-        calculateBills(amount - 500, bills1000, bills500);
+        calculateBills(amount - 500, bills1000, bills500)
     }
 
 }
@@ -128,6 +148,17 @@ int main () {
     logTransaction("Deposit", 5000, 0);
     
     login();
+
+    // Part 6 Fstream clear shinanigans Vector Clear
+    cardNumbers.clear();
+    encodedPINs.clear();
+    balances.clear();
+    userBanks.clear();
+    accountTypes.clear();
+    transactionTypes.clear();
+    transactionAmounts.clear();
+    transactionFees.clear();
+    transactionQuantities.clear();
     
     return 0;
 }
@@ -232,12 +263,13 @@ void clientMenu () {
             
             cout << "[1] 500Php" << endl;
             cout << "[2] 1000Php" << endl;
-            cout << "[3] 5,000Php" << endl;
-            cout << "[4] 10,000Php" << endl;
+            cout << "[3] 5,000Php";
+            cout << "[4] 10,000Php\n";
             cout << "[5] Enter an Amount." << endl;
             cout << "===========================" << endl;
             cout << "Enter your choice (1-5): ";
             cin >> wdrawAmount1;
+            
             
             
             if(wdrawAmount1 == 1) amount = 500;
@@ -250,6 +282,11 @@ void clientMenu () {
                 cin >> wdrawAmount2;
                 
                 amount = wdrawAmount2;
+    }
+    
+    if(amount % 500 != 0){
+        cout << "Invalid  Amount. Amount must be divisible by 500";
+        continue;
     }
 
     // Determine bank index fee and daily limit
@@ -294,7 +331,7 @@ void clientMenu () {
 
     // Deduct amount and fee
     balances[accountIndex] -= totalDeduction;
-    logTransaction("Withdrawal", amount, fee);
+    logTransaction(cardNumbers[accountIndex], "Withdrawal", amount, fee);
 
 
     cout << "Please Wait..." << endl;
@@ -308,8 +345,6 @@ void clientMenu () {
     calculateBills(amount, bills1000, bills500);
     cout << "1000 Bills: " << bills1000 << endl;
     cout << "500 Bills: " << bills500 <<  endl;
-    billCount[1] -= bills1000;
-    billCount[0] -= bills500;
 
     displayDateTime();
 
@@ -367,7 +402,7 @@ void clientMenu () {
 
     balances[accountIndex] -= totalDeduction;
     balances[receiverIndex] += amount;
-    logTransaction("Transfer", amount, fee);
+    logTransaction(cardNumbers[accountIndex], "Transfer", amount, fee);
 
     time_t now = time(0);
     cout << "Transfer successful!\n";
@@ -478,7 +513,7 @@ void adminMenu () {
                 for(int i = 0; i < cardNumbers.size(); i++){
                     cout << "Account " << i + 1 << endl;
                     cout << "Card Number: " << cardNumbers[i] << endl;
-                    cout << "Bank: " << bankNames[i] << endl;
+                    cout << "Bank: " << userBanks[i] << endl;
                     cout << "Account Type: " << accountTypes[i] << endl;
                     cout << "Balance: " << balances[i] << endl;
                     cout << "--------------------------" << endl;
@@ -603,3 +638,23 @@ void adminMenu () {
     } while (choice != 9);
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
