@@ -195,7 +195,16 @@ int main () {
 
 
 //where to do code
-int login() {
+int login(vector<string>& cardNumbers,
+vector<string>& encodedPINs,     
+vector<double>& balances,     
+vector<string>& userBanks,        
+vector<string>& accountTypes,    
+vector<string>& transactionTypes,    
+vector<double>& transactionAmounts,
+vector<double>& transactionFees,
+vector<int>& transactionQuantities) {
+    
     int role;
 
     cout << "======= WELCOME TO ATM SYSTEM =======" << endl;
@@ -205,10 +214,13 @@ int login() {
     cin >> role;
 
     if (role == 1){
-        clientMenu();
+        clientMenu(cardNumbers, encodedPINs, balances,
+        userBanks,accountTypes, transactionTypes, transactionAmounts,
+        transactionFees, transactionQuantities);
     }
     else if (role == 2){
-        adminMenu();
+        adminMenu(cardNumbers, encodedPINs,
+        balances, userBanks, accountTypes);
     }
     else {
         cout << "Invalid Choice!";
@@ -216,11 +228,19 @@ int login() {
 
 
     
-    return 0;
+    return role;
 }
 
 
-void clientMenu () {
+void clientMenu (vector<string>& cardNumbers,
+vector<string>& encodedPINs,     
+vector<double>& balances,        
+vector<string>& userBanks,        
+vector<string>& accountTypes,    
+vector<string>& transactionTypes,    
+vector<double>& transactionAmounts,
+vector<double>& transactionFees,
+vector<int>& transactionQuantities) {
 
     string card, pin;
 
@@ -487,7 +507,11 @@ void clientMenu () {
 
 
 
-void adminMenu () {
+void adminMenu (vector<string>& cardNumbers,
+vector<string>& encodedPINs,     
+vector<double>& balances,        
+vector<string>& userBanks,        
+vector<string>& accountTypes) {
     int choice;
     
     do {
