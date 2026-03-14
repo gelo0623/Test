@@ -46,7 +46,7 @@ vector<double> transactionAmounts;
 vector<double> transactionFees;
 vector<int> transactionQuantities;  
 
-void logTransaction(string type, double amount, double fee) {
+void logTransaction(const string& cardNum, const string& type, double amount, double fee) {
 
     bool found = false;
 
@@ -79,7 +79,7 @@ void logTransaction(string type, double amount, double fee) {
         time_t now = time(0);
         tm* timeinfo = localtime(&now);
         
-        file << (timeinfo->tm_mon + 1) << "/" << timeinfo->tm_mday << "/" (timeinfo->tm_year + 1900) << "," << timeinfo->tm_hour << ":" << timeinfo->tm_min << "," << cardNum << "," << type << "," << amount << "," << fee << endl;
+        file << (timeinfo->tm_mon + 1) << "/" << timeinfo->tm_mday << "/" << (timeinfo->tm_year + 1900) << "," << timeinfo->tm_hour << ":" << timeinfo->tm_min << "," << cardNum << "," << type << "," << amount << "," << fee << endl;
         file.close();
     }
     else {
@@ -112,7 +112,7 @@ void calculateBills(double amount, int& bills1000, int& bills500) {
 
     else if (amount >= 500) {
         bills500++;
-        calculateBills(amount - 500, bills1000, bills500)
+        calculateBills(amount - 500, bills1000, bills500);
     }
 
 }
